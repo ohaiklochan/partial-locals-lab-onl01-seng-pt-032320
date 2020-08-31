@@ -18,10 +18,6 @@ class Student < ActiveRecord::Base
   validates :birthday, presence: true
 
   def self.search(query)
-    if query.present?
-      where('NAME like ?', "%#{query}%")
-    else
-      self.all
-    end
+    query.present? ? self.all.select { |student| student.name.downcase.include?(query.downcase) } : self.all
   end
 end
